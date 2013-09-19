@@ -29,8 +29,16 @@ def live_view(request):
 @twilio_view
 def sms_endpoint(request):
 
-    quick = blaaaaaaargh
+
+    #quick = blaaaaaaargh
+    if request.method == "POST":
+        the_contact = get_object_or_404(Contact, phone_number=request.POST['From'])
+        the_message = Message()
+        the_message.contact = the_contact
+        the_message.text = request.POST['Body']
+        the_message.save()
+
     r = Response()
     #r.sms('Thanks for the SMS message!')
-    print r
+    #print r
     return r
