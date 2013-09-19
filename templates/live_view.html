@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Start Times | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">Live View</a></li>
+{% endblock %}
+
+{% block ui %}
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped">
+  <tbody>
+    {% for message in message_list %}
+    <tr>
+      <td>{{message.contact.name}}</td>
+      <td>{{message.text}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+    
+{% block pageScripts %}
+<script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var pusher = new Pusher('{{PUSHER_KEY}}');
+      var channel = pusher.subscribe('realtime');
+      channel.bind('new_message', function(data) {
+        $("<tr><td>"+ data.sender +"</td><td>"+ data.text +"</td></tr>").prependTo("table > tbody");
+      });
+    </script>
+{% endblock %}

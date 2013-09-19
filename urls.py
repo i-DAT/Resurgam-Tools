@@ -9,4 +9,7 @@ urlpatterns = patterns('',
      (r'^shipmates/holder/(?P<holder_id>\d+)/$', 'shipmates.views.check_in_holders'),
      (r'^shipmates/visual/', 'shipmates.views.visual'),
      (r'^shipmates/', 'shipmates.views.list_start_times'),
+
+     (r'^semaphore/sms/', 'semaphore.views.sms_endpoint'),
+     (r'^semaphore/live/', 'semaphore.views.live_view'),
 )
