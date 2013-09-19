@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{start_time}} | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">{{start_time}}</a></li>
+{% endblock %}
+
+{% block ui %}
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped">
+  <tbody>
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Quantity</td>
+        <td>Barcode</td>
+        <td>Order Type</td>
+      </tr>
+    </thead>
+    {% for holder in holder_list %}
+    <tr>
+      <td><a href="/shipmates/holder/{{holder.id}}/">{{holder.name}}</a></td>
+      <td>{{holder.quantity}}</td>
+      <td>{{holder.barcode}}</td>
+      <td>{{holder.order_type}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+    
+{% block pageScripts %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}

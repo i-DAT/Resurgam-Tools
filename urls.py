@@ -5,5 +5,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
      url(r'^admin/', include(admin.site.urls)),
-     url(r'^shipmates/', 'shipmates.views.list_start_times')
+     (r'^shipmates/time/(?P<type_id>\d+)/$', 'shipmates.views.list_ticket_holders'),
+     (r'^shipmates/', 'shipmates.views.list_start_times'),
 )

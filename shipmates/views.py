@@ -18,3 +18,11 @@ def list_start_times(request):
         'types_list': types_list
     }, context_instance=RequestContext(request))
 
+def list_ticket_holders(request, type_id):
+    the_type = get_object_or_404(TicketType, pk=type_id)
+    holder_list = TicketHolder.objects.filter(tickettype=the_type, checked_in=False)
+
+    return render_to_response('list_ticket_holders.html', {
+        'holder_list': holder_list,
+        'start_time': the_type.name
+    }, context_instance=RequestContext(request))
