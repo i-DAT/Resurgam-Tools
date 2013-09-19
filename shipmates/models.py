@@ -1,3 +1,28 @@
 from django.db import models
 
-# Create your models here.
+class TicketType(models.Model):
+    eb_id = models.IntegerField()
+    name = models.CharField(max_length=250)
+
+    def __unicode__(self):
+        return self.name
+
+class TicketHolder(models.Model):
+    name = models.CharField(max_length=500)
+    order_type = models.CharField(max_length=250)
+    barcode = models.CharField(max_length=250)
+    email = models.EmailField()
+    quantity = models.IntegerField()
+    tickettype = models.ForeignKey(TicketType)
+
+    def __unicode__(self):
+        return self.name
+
+class Player(models.Model):
+    ticketholder = models.ForeignKey(TicketHolder)
+    name = models.CharField(max_length=500)
+
+    def __unicode__(self):
+        return self.name
+
+
