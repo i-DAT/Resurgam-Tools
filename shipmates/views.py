@@ -41,6 +41,13 @@ def make_player_form(quantity, first_player):
 
     return type('player_form', (forms.BaseForm,), { 'base_fields': fields })
 
+def visual(request):
+    players_list = Player.objects.all()
+
+    return render_to_response('visual.html', {
+        'players_list': players_list
+    }, context_instance=RequestContext(request))
+
 def list_start_times(request):
     types_list = TicketType.objects.all()
 
