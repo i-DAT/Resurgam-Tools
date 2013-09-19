@@ -1,0 +1,6 @@
+Django==1.5.4
+PIL==1.1.7
+South==0.8.2
+django-registration==1.0
+requests==1.2.3
+
