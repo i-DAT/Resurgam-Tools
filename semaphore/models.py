@@ -1,6 +1,10 @@
 from django.db import models
 
-# Create your models here.
+import pusher
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from settings import authentications as auths
 
 class Contact(models.Model):
@@ -16,3 +20,20 @@ class Message(models.Model):
     recieved = models.DateTimeField(auto_now_add=True, null=True)
     def __unicode__(self):
         return self.contact.name + ': ' + self.text
+
+def setupPusher():
+    p = pusher.Pusher(
+        app_id=auths.PUSHER_APP_ID,
+        key=auths.PUSHER_KEY,
+        secret=auths.PUSHER_SECRET
+    )
+    return p
+
+
+@receiver(post_save, sender=Message)
+def pushMessage(sender, instance, **kwargs):
+    push = setupPusher()
+    push['realtime'].trigger('new_message', {
+        'sender': instance.contact.name,
+        'text': instance.text,
+    })
