@@ -14,6 +14,7 @@ class TicketHolder(models.Model):
     email = models.EmailField()
     quantity = models.IntegerField()
     tickettype = models.ForeignKey(TicketType)
+    checked_in = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
