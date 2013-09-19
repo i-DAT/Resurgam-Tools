@@ -18,17 +18,18 @@ import datetime
 from settings import authentications as auths
 
 def live_view(request):
-	message_list = Message.objects.all().order_by("-recieved")
+    message_list = Message.objects.all().order_by("-recieved")
 
-	return render_to_response('live_view.html', {
+    return render_to_response('live_view.html', {
         'message_list': message_list,
         'PUSHER_KEY': auths.PUSHER_KEY
     }, context_instance=RequestContext(request))
 
 
 @twilio_view
-def sms_endpoint(request, message, to=None, sender=None, action=None, method=None,
-        status_callback=None):
+def sms_endpoint(request):
+
+    quick = blaaaaaaargh
     r = Response()
     #r.sms('Thanks for the SMS message!')
     print r
