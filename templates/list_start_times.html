@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Start Times | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">Start Times</a></li>
+{% endblock %}
+
+{% block ui %}
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped">
+  <tbody>
+    {% for type in types_list %}
+    <tr>
+      <td><a href="/time/{{type.id}}/">{{type.name}}</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+    
+{% block pageScripts %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}
