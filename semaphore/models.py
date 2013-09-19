@@ -7,6 +7,10 @@ from django.dispatch import receiver
 
 from settings import authentications as auths
 
+from django_twilio.client import twilio_client
+
+
+
 class Contact(models.Model):
     name = models.CharField(max_length=250)
     short = models.CharField(max_length=5, blank=True, null=True)
@@ -37,3 +41,15 @@ def pushMessage(sender, instance, **kwargs):
         'sender': instance.contact.name,
         'text': instance.text,
     })
+
+    return_sms = instance.contact.short + ": " + instance.text
+    contact_list = Contact.objects.all()
+
+    for contact in contact_list:
+        sms = twilio_client.messages.create(
+            body=return_sms,
+            to=contact.phone_number,
+            from_=auths.TWILIO_NUMBER,
+        )
+
+
