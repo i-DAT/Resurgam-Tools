@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{start_time}} | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">{{start_time}}</a></li>
+{% endblock %}
+
+{% block ui %}
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<form action="." method="post" class="form">{% csrf_token %}
+    {{the_form.as_p}}
+
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" value="Check in Players" class="btn btn-primary btn-large" />
+      </div>
+    </div>
+</form>
+
+
+{% endblock %}
+    
+{% block pageScripts %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}
