@@ -13,6 +13,8 @@
 {% endblock %}
 
 {% block content %}
+
+{% if holder_list %}
 <table class="table table-striped">
   <tbody>
     <thead>
@@ -33,6 +35,16 @@
     {% endfor %}
   </tbody>
 </table>
+{% else %}
+  {% if next_id == 6 %}
+  <h1>All Finished!!!</h1>
+  <h1>Proceed to RWY</h1>
+  {% else %}
+  <h1>All done for this time slot!</h1>
+
+  <a href="/shipmates/time/{{next_id}}/" class="btn btn-primary btn-large">Next one</a>
+  {% endif %}
+{% endif %}
 
 {% endblock %}
     

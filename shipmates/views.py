@@ -55,7 +55,8 @@ def list_ticket_holders(request, type_id):
 
     return render_to_response('list_ticket_holders.html', {
         'holder_list': holder_list,
-        'start_time': the_type.name
+        'start_time': the_type.name,
+        'next_id': the_type.id + 1
     }, context_instance=RequestContext(request))
 
 def check_in_holders(request, holder_id):
