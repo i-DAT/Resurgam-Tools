@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Start Times | Resurgam{% endblock %}
+{% block title %}Semaphore | Live | Resurgam{% endblock %}
 
 {% block nav %}
     <li class="active"><a href="#">Live View</a></li>
@@ -13,6 +13,16 @@
 {% endblock %}
 
 {% block content %}
+<form id="send_form" method="post" class="form">{% csrf_token %}
+    {{send_form.as_p}}
+
+    <div class="control-group">
+      <div class="controls">
+        <input type="submit" value="Send Message" class="btn btn-primary" />
+      </div>
+    </div>
+</form>
+
 <table class="table table-striped">
   <thead>
       <tr>
@@ -46,6 +56,17 @@
         $("<tr><td>"+ data.sender +"</td><td>"+ data.text +"</td><td><time class=\"timeago\" datetime=\""+ data.recieved +"\">"+ data.recieved +"</time></td></tr>").prependTo("table > tbody");
           $("time.timeago").timeago();
       });
+
+      $( "#send_form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        if ($('#id_text').val() == ''){
+          alert('You need to add something to the message first!');
+        } else {
+          $.post('/semaphore/live/send/', $(this).serialize());
+          $('#id_text').val('');
+        }
+      });
+
       $(document).ready(function() {
         $("time.timeago").timeago();
       });

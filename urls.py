@@ -11,5 +11,6 @@ urlpatterns = patterns('',
      (r'^shipmates/', 'shipmates.views.list_start_times'),
 
      (r'^semaphore/sms/', 'semaphore.views.sms_endpoint'),
+     (r'^semaphore/live/send/', 'semaphore.views.live_view_send'),
      (r'^semaphore/live/', 'semaphore.views.live_view'),
 )

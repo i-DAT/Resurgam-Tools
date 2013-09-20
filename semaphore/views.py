@@ -17,13 +17,41 @@ import datetime
 
 from settings import authentications as auths
 
+class send_form(forms.Form):
+    text = forms.CharField(max_length=140)
+
 def live_view(request):
     message_list = Message.objects.all().order_by("-recieved")
+    a_send_form = send_form()
 
     return render_to_response('live_view.html', {
         'message_list': message_list,
+        'send_form': a_send_form,
         'PUSHER_KEY': auths.PUSHER_KEY
     }, context_instance=RequestContext(request))
+
+
+
+
+def live_view_send(request):
+    success = False
+
+    if request.method == "POST":
+        a_send_form = send_form(request.POST)
+
+        if a_send_form.is_valid():
+            #Send from HQ Contact. Using XXX is not ideal, but works for now
+            success = True
+            the_contact = get_object_or_404(Contact, phone_number='XXX')
+            the_message = Message()
+            the_message.contact = the_contact
+            the_message.text = a_send_form.cleaned_data['text']
+            the_message.save()
+
+        return render_to_response('form_return.json', {
+            'success': success,
+        }, context_instance=RequestContext(request))
+
 
 
 @twilio_view
