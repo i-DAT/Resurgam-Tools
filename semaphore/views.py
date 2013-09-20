@@ -18,7 +18,7 @@ import datetime
 from settings import authentications as auths
 
 class send_form(forms.Form):
-    text = forms.CharField(max_length=140)
+    text = forms.CharField(max_length=140, label='Your Message')
 
 def live_view(request):
     message_list = Message.objects.all().order_by("-recieved")

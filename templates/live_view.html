@@ -13,36 +13,47 @@
 {% endblock %}
 
 {% block content %}
+<div class="row">
 <form id="send_form" method="post" class="form">{% csrf_token %}
-    {{send_form.as_p}}
 
-    <div class="control-group">
+    <div class="control-group span10">
+        <div class="controls">
+          <input id="id_text" placeholder="Type a message…" maxlength="140" name="text" type="text" style="width: 100%;">
+      </div>
+    </div>
+
+    <div class="control-group span2">
       <div class="controls">
         <input type="submit" value="Send Message" class="btn btn-primary" />
       </div>
     </div>
 </form>
+</div>
 
-<table class="table table-striped">
-  <thead>
-      <tr>
-        <td>Contact</td>
-        <td>Message</td>
-        <td>Recieved</td>
-      </tr>
+<div class="row">
+  <div class="span12">
+    <table class="table table-striped">
+      <thead>
+          <tr>
+            <td>Contact</td>
+            <td>Message</td>
+            <td>Recieved</td>
+          </tr>
 
-    </thead>
+        </thead>
 
-  <tbody>
-    {% for message in message_list %}
-    <tr>
-      <td>{{message.contact.name}}</td>
-      <td>{{message.text}}</td>
-      <td><time class="timeago" datetime="{{message.recieved|date:'Y-m-d\TH:i:s'}}">{{message.recieved}}</time></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+      <tbody>
+        {% for message in message_list %}
+        <tr>
+          <td>{{message.contact.name}}</td>
+          <td>{{message.text}}</td>
+          <td><time class="timeago" datetime="{{message.recieved|date:'Y-m-d\TH:i:s'}}">{{message.recieved}}</time></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 {% endblock %}
     
