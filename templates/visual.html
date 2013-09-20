@@ -11,11 +11,64 @@
         
   </head>
   <body>
-    {% for player in players_list %}
-      <p>{{player.name}}</p>
-    {% endfor %}
+
     
     <script src="https://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://github.com/downloads/processing-js/processing-js/processing-1.4.1.min.js"></script>
+    <script type="text/processing" data-processing-target="processing-canvas">
+      /* @pjs preload="https://dl.dropboxusercontent.com/u/975836/resurgam-paper-rotate.png"; */
+      String[] players = new String[{{players_list.count}} - 1];
+      int start_scroll = 1001;
+      PImage b;
+
+      void setup() {
+        size(674, 1001);
+        background(100);
+
+        
+
+        b = loadImage("https://dl.dropboxusercontent.com/u/975836/resurgam-paper-rotate.png");
+
+        background(b);
+
+
+        //players[0] = "shipmates"
+
+        {% for player in players_list %}
+        players[{{forloop.counter0}}] = '{{player.name}}';
+        {% endfor %}
+
+        stroke(0);
+        fill(0);
+
+        text("shipmates", 15, 30); 
+
+        textAlign(CENTER);
+        textSize(32);
+
+
+      }
+
+      void draw(){
+        background(b);
+        text("SHIPMATES", 674/2, start_scroll);
+        for (int i = 0; i < players.length; i++) {
+          text(players[i].toUpperCase(), 674/2, start_scroll + 100 + (i * 40));
+        }
+
+        start_scroll = start_scroll - 1;
+
+        if (start_scroll < ((1001 + 300 + (players.length * 40) ) *-1 )  ){
+          start_scroll = 1001;
+
+        }
+
+        text("JAMES BOND WILL RETURN", 674/2, start_scroll + 200 + (players.length * 40));
+
+
+      }
+    </script>
+<canvas id="processing-canvas"> </canvas>
 
   </body>
 </html>
