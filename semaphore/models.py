@@ -9,6 +9,9 @@ from settings import authentications as auths
 
 from django_twilio.client import twilio_client
 
+import pytz
+
+from django.utils import timezone
 
 
 class Contact(models.Model):
@@ -24,7 +27,7 @@ def sendWelcome(sender, instance, created, **kwargs):
     if created:
         if not instance.exclude_sms:
             return_sms = 'Hi ' + instance.name + ', you\'ve been added to the Resurgam text group. Respond to this number to send out a message to the group'
-            sms = twilio_client.messages.create(
+            twilio_client.messages.create(
                 body=return_sms,
                 to=instance.phone_number,
                 from_=auths.TWILIO_NUMBER,
@@ -50,9 +53,11 @@ def setupPusher():
 @receiver(post_save, sender=Message)
 def pushMessage(sender, instance, **kwargs):
     push = setupPusher()
+    recieved = timezone.localtime(instance.recieved)
     push['realtime'].trigger('new_message', {
         'sender': instance.contact.name,
         'text': instance.text,
+        'recieved': recieved.strftime('%Y-%m-%dT%H:%M:%S')
     })
 
     return_sms = instance.contact.short + ": " + instance.text
