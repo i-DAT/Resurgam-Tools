@@ -33,7 +33,6 @@ def live_view(request):
     }, context_instance=RequestContext(request))
 
 
-@login_required
 def live_view_send(request):
     success = False
 

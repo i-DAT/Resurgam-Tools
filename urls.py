@@ -6,8 +6,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
      url(r'^admin/', include(admin.site.urls)),
-     (r'^semaphore/live/send/', 'semaphore.views.live_view_send'),
-
      #registration, for dashboard logins
      (r'^accounts/', include('registration.backends.default.urls')),
      (r'^shipmates/time/(?P<type_id>\d+)/$', 'shipmates.views.list_ticket_holders'),
@@ -16,7 +14,7 @@ urlpatterns = patterns('',
      (r'^shipmates/', 'shipmates.views.list_start_times'),
 
      (r'^semaphore/sms/', 'semaphore.views.sms_endpoint'),
-
+     (r'^semaphore/live/send/', 'semaphore.views.live_view_send'),
      (r'^semaphore/live/', 'semaphore.views.live_view'),
 
       #(r'^favicon\.ico$', RedirectView.as_view('/static/favicon.ico')),
