@@ -68,7 +68,7 @@ def pushMessage(sender, instance, **kwargs):
     )
 
     for contact in contact_list:
-        sms = twilio_client.messages.create(
+        twilio_client.messages.create(
             body=return_sms,
             to=contact.phone_number,
             from_=auths.TWILIO_NUMBER,
