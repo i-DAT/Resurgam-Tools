@@ -15,6 +15,7 @@ class Contact(models.Model):
     name = models.CharField(max_length=250)
     short = models.CharField(max_length=5, blank=True, null=True)
     phone_number = models.CharField(max_length=250)
+    exclude_sms = models.BooleanField(default=False)
     def __unicode__(self):
         return self.name
 
