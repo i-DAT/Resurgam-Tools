@@ -22,6 +22,8 @@ class TicketHolder(models.Model):
 class Player(models.Model):
     ticketholder = models.ForeignKey(TicketHolder)
     name = models.CharField(max_length=500)
+    email = models.EmailField(blank=True, null=True)
+    arrived = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name

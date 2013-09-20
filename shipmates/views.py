@@ -15,7 +15,7 @@ from models import *
 import collections
 
 
-def make_player_form(quantity, first_player):
+def make_player_form(quantity, first_player, first_player_email):
     fields = {}
     count = 1
 
@@ -23,9 +23,9 @@ def make_player_form(quantity, first_player):
         field_name = ''
 
         if count < 10:
-            field_name = '0'+str(count)
+            field_name = '0'+str(count)+ " Name"
         else:
-            field_name = str(count)
+            field_name = str(count)+" Name"
 
         if count == 1:
             fields[field_name] = forms.CharField(
@@ -38,7 +38,29 @@ def make_player_form(quantity, first_player):
             )
         count += 1
 
-        fields = collections.OrderedDict(sorted(fields.items()))
+    count = 1
+
+    while count <= quantity:
+        field_name = ''
+
+        if count < 10:
+            field_name = '0'+str(count)+ " mail"
+        else:
+            field_name = str(count)+" mail"
+
+        if count == 1:
+            fields[field_name] = forms.CharField(
+                initial=first_player_email,
+                error_messages={'required': 'Please enter an email address'}
+            )
+        else:
+            fields[field_name] = forms.CharField(
+                error_messages={'required': 'Please enter an email address'}
+            )
+        count += 1
+
+    
+    fields = collections.OrderedDict(sorted(fields.items()))
 
     return type('player_form', (forms.BaseForm,), { 'base_fields': fields })
 
@@ -75,18 +97,32 @@ def list_ticket_holders(request, type_id):
 def check_in_holders(request, holder_id):
     the_holder = get_object_or_404(TicketHolder, pk=holder_id)
 
-    the_form = make_player_form(the_holder.quantity, the_holder.name)
+    the_form = make_player_form(the_holder.quantity, the_holder.name, the_holder.email)
 
     success = False
+
+    player_name = ""
+    player_email = ""
 
     if request.method == "POST":
         the_form = the_form(request.POST)
         if the_form.is_valid():
             for key, value in the_form.cleaned_data.iteritems():
-                the_player = Player()
-                the_player.name = value
-                the_player.ticketholder = the_holder
-                the_player.save()
+                print key[3:]
+                if key[3:] == 'Name':
+                    player_name = value
+                if key[3:] == 'mail':
+                    player_email = value
+
+                if player_name:
+                    if player_email:
+                        the_player = Player()
+                        the_player.name = player_name
+                        the_player.email = player_email
+                        the_player.ticketholder = the_holder
+                        the_player.save()
+                        player_name = ""
+                        player_email = ""
 
             the_holder.checked_in = True
             the_holder.save()
