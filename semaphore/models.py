@@ -56,7 +56,11 @@ def pushMessage(sender, instance, **kwargs):
     })
 
     return_sms = instance.contact.short + ": " + instance.text
-    contact_list = Contact.objects.exclude(phone_number=instance.contact.phone_number)
+    contact_list = Contact.objects.exclude(
+        phone_number=instance.contact.phone_number
+    ).filter(
+        exclude_sms=False
+    )
 
     for contact in contact_list:
         sms = twilio_client.messages.create(
