@@ -14,11 +14,21 @@
 
 {% block content %}
 <table class="table table-striped">
+  <thead>
+      <tr>
+        <td>Contact</td>
+        <td>Message</td>
+        <td>Recieved</td>
+      </tr>
+
+    </thead>
+
   <tbody>
     {% for message in message_list %}
     <tr>
       <td>{{message.contact.name}}</td>
       <td>{{message.text}}</td>
+      <td><time class="timeago" datetime="{{message.recieved|date:'Y-m-d\TH:i:s'}}">{{message.recieved}}</time></td>
     </tr>
     {% endfor %}
   </tbody>
@@ -28,11 +38,16 @@
     
 {% block pageScripts %}
 <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
+<script src="http://timeago.yarp.com/jquery.timeago.js" type="text/javascript"></script>
     <script type="text/javascript">
       var pusher = new Pusher('{{PUSHER_KEY}}');
       var channel = pusher.subscribe('realtime');
       channel.bind('new_message', function(data) {
-        $("<tr><td>"+ data.sender +"</td><td>"+ data.text +"</td></tr>").prependTo("table > tbody");
+        $("<tr><td>"+ data.sender +"</td><td>"+ data.text +"</td><td><time class=\"timeago\" datetime=\""+ data.recieved +"\">"+ data.recieved +"</time></td></tr>").prependTo("table > tbody");
+          $("time.timeago").timeago();
+      });
+      $(document).ready(function() {
+        $("time.timeago").timeago();
       });
     </script>
 {% endblock %}
