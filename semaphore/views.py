@@ -20,6 +20,8 @@ from settings import authentications as auths
 class send_form(forms.Form):
     text = forms.CharField(max_length=140, label='Your Message')
 
+
+@login_required
 def live_view(request):
     message_list = Message.objects.all().order_by("-recieved")
     a_send_form = send_form()
@@ -31,8 +33,7 @@ def live_view(request):
     }, context_instance=RequestContext(request))
 
 
-
-
+@login_required
 def live_view_send(request):
     success = False
 

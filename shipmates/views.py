@@ -14,6 +14,7 @@ from models import *
 
 import collections
 
+
 def make_player_form(quantity, first_player):
     fields = {}
     count = 1
@@ -41,6 +42,7 @@ def make_player_form(quantity, first_player):
 
     return type('player_form', (forms.BaseForm,), { 'base_fields': fields })
 
+
 def visual(request):
     players_list = Player.objects.all()
 
@@ -48,6 +50,7 @@ def visual(request):
         'players_list': players_list
     }, context_instance=RequestContext(request))
 
+@login_required
 def list_start_times(request):
     types_list = TicketType.objects.all()
 
@@ -56,6 +59,7 @@ def list_start_times(request):
     }, context_instance=RequestContext(request))
 
 
+@login_required
 def list_ticket_holders(request, type_id):
     the_type = get_object_or_404(TicketType, pk=type_id)
     holder_list = TicketHolder.objects.filter(tickettype=the_type, checked_in=False)
@@ -66,6 +70,8 @@ def list_ticket_holders(request, type_id):
         'next_id': the_type.id + 1
     }, context_instance=RequestContext(request))
 
+
+@login_required
 def check_in_holders(request, holder_id):
     the_holder = get_object_or_404(TicketHolder, pk=holder_id)
 
