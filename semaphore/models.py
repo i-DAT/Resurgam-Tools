@@ -19,6 +19,18 @@ class Contact(models.Model):
     def __unicode__(self):
         return self.name
 
+@receiver(post_save, sender=Contact)
+def sendWelcome(sender, instance, created, **kwargs):
+    if created:
+        if not instance.exclude_sms:
+            return_sms = 'Hi ' + instance.name + ', you\'ve been added to the Resurgam text group. Respond to this number to send out a message to the group'
+            sms = twilio_client.messages.create(
+                body=return_sms,
+                to=instance.phone_number,
+                from_=auths.TWILIO_NUMBER,
+            )
+
+
 class Message(models.Model):
     contact =  models.ForeignKey(Contact)
     text = models.TextField(blank=True, null=True)
