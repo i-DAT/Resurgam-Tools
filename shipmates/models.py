@@ -51,6 +51,14 @@ class Crew(models.Model):
     def __unicode__(self):
         return self.name
 
+@receiver(post_save, sender=TicketHolder)
+def pushHolder(sender, instance, **kwargs):
+    if instance.checked_in:
+        push = setupPusher()
+        push['arrivals'].trigger('checked_in', {
+            'holder_id': instance.id
+        })
+
 
 @receiver(post_save, sender=Player)
 def pushMessage(sender, instance, **kwargs):
@@ -58,5 +66,6 @@ def pushMessage(sender, instance, **kwargs):
         push = setupPusher()
         push['boarding'].trigger('checked_in', {
             'player_id': instance.id,
+            'player_name': instance.name
         })
 

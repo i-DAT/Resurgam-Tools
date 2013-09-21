@@ -17,7 +17,7 @@
 {% block content %}
 
 <div class="row">
-  <div class="span12">
+  <div id="the_content" class="span12">
 {% if holder_list %}
 
 <table class="table table-striped">
@@ -30,7 +30,7 @@
       </tr>
     </thead>
     {% for holder in holder_list %}
-    <tr>
+    <tr id="{{holder.id}}">
       <td><a href="/shipmates/holder/{{holder.id}}/">{{holder.name}}</a></td>
       <td>{{holder.quantity}}</td>
       <td>{{holder.barcode}}</td>
@@ -54,6 +54,16 @@
 {% endblock %}
     
 {% block pageScripts %}
+    <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-    </script>
+    var pusher = new Pusher('{{PUSHER_KEY}}');
+      var channel = pusher.subscribe('arrivals');
+      channel.bind('checked_in', function(data) {
+        $("#"+ data.holder_id).remove();
+        if($('table tr').length = 1){
+          $("#the_content").html("{% if next_id == 6 %}<h1>All Finished!!!</h1>{% else %}<h1>All done for this time slot!</h1><a href=\"/shipmates/time/{{next_id}}/\" class=\"btn btn-primary btn-large\">Next one</a>{% endif %}")
+        }
+
+      });
+      </script>
 {% endblock %}

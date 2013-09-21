@@ -14,14 +14,15 @@
         
   </head>
   <body>
+    <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
 
     
     <script src="https://code.jquery.com/jquery-latest.js"></script>
     <script src="https://github.com/downloads/processing-js/processing-js/processing-1.4.1.min.js"></script>
     <script type="text/processing" data-processing-target="processing-canvas">
       /* @pjs preload="https://dl.dropboxusercontent.com/u/975836/ROSTER-ship-small.png"; font="https://dl.dropboxusercontent.com/u/975836/Quintessential.ttf"; preload="https://dl.dropboxusercontent.com/u/975836/Pearl.png"*/
-      String[] players = new String[{{players_list.count}} - 1];
-      
+      //String[] players = new String[{{players_list.count}} - 1];
+      String[] players = { {% for player in players_list %}'{{player.name}}',  {% endfor %} };
       PImage b;
       PImage Pearl;
       PFont font;
@@ -49,9 +50,7 @@
 
         //players[0] = "shipmates"
 
-        {% for player in players_list %}
-        players[{{forloop.counter0}}] = '{{player.name}}';
-        {% endfor %}
+
 
         stroke(0);
         fill(0);
@@ -63,6 +62,13 @@
 
 
       }
+
+      var pusher = new Pusher('{{PUSHER_KEY}}');
+      var channel = pusher.subscribe('boarding');
+      channel.bind('checked_in', function(data) {
+        append(players,data.player_name)
+
+      });
 
       void draw(){
         background(b);
@@ -85,6 +91,16 @@
       }
     </script>
 <canvas id="processing-canvas"> </canvas>
+
+    <script type="text/javascript">
+    
+
+
+    //$( ".btn" ).click(function() {
+      //alert(this.getAttribute( "player_id" ));
+      //$.post('/boarding/check_in/', {"player_id":this.getAttribute( "player_id")});
+    //});
+    </script>
 
   </body>
 </html>

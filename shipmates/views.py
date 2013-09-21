@@ -69,10 +69,11 @@ def make_player_form(quantity, first_player, first_player_email):
 
 
 def visual(request):
-    players_list = Player.objects.all()
+    players_list = Player.objects.filter(arrived=True)
 
     return render_to_response('visual.html', {
-        'players_list': players_list
+        'players_list': players_list,
+        'PUSHER_KEY': auths.PUSHER_KEY
     }, context_instance=RequestContext(request))
 
 @login_required
@@ -92,7 +93,8 @@ def list_ticket_holders(request, type_id):
     return render_to_response('list_ticket_holders.html', {
         'holder_list': holder_list,
         'start_time': the_type.name,
-        'next_id': the_type.id + 1
+        'next_id': the_type.id + 1,
+        'PUSHER_KEY': auths.PUSHER_KEY
     }, context_instance=RequestContext(request))
 
 
@@ -111,7 +113,7 @@ def check_in_holders(request, holder_id):
         the_form = the_form(request.POST)
         if the_form.is_valid():
             for key, value in the_form.cleaned_data.iteritems():
-                print key[3:]
+                #print key[3:]
                 if key[3:] == 'Name':
                     player_name = value
                 if key[3:] == 'mail':
