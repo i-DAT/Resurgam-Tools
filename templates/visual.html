@@ -29,8 +29,10 @@
 
       int the_width = 1069; 
       int the_height = 720;
+      boolean stopping = false; 
 
-      int start_scroll = the_height + 200;
+      int start_scroll = the_height + 50;
+      int stop_scroll = the_height + 50;
 
       void setup() {
         size(the_width, the_height);
@@ -79,16 +81,32 @@
 
         start_scroll = start_scroll - 1;
 
-        if (start_scroll < ((the_height + 300 + (players.length * 40) ) *-1 )  ){
-          start_scroll = the_height + 200;
-
+        if (start_scroll < ((the_height + 5 + (players.length * 40) ) *-1 )  ){
+          if(stopping == true){
+              //int placed_height = 
+              //image(Pearl, ((the_width - 900)/2), ((the_height - 183)/2));
+              image(Pearl, ((the_width - 900)/2), stop_scroll);
+              if(stop_scroll > ((the_height - 183)/2)){
+                stop_scroll = stop_scroll - 1;
+              }
+          }else{
+            start_scroll = the_height + 50;
+          }
+          
         }
-
-        //text("JAMES BOND WILL RETURN", the_width/2, start_scroll + 200 + (players.length * 40));
-        image(Pearl, ((the_width - 900)/2), start_scroll + 200 + (players.length * 40));
 
 
       }
+
+      void keyTyped() {
+        console.log(key.code);
+        if (key.code == 115){
+          console.log('stopping');
+          stopping = true
+        }
+
+      } 
+
     </script>
 <canvas id="processing-canvas"> </canvas>
 
