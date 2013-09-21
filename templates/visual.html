@@ -5,6 +5,9 @@
     <title>Ships's Scroll</title>
     
     	<style>
+      body{
+        background-color: #000000;
+      }
 
         </style>
         
@@ -16,18 +19,30 @@
     <script src="https://code.jquery.com/jquery-latest.js"></script>
     <script src="https://github.com/downloads/processing-js/processing-js/processing-1.4.1.min.js"></script>
     <script type="text/processing" data-processing-target="processing-canvas">
-      /* @pjs preload="https://dl.dropboxusercontent.com/u/975836/resurgam-paper-rotate.png"; */
+      /* @pjs preload="https://dl.dropboxusercontent.com/u/975836/ROSTER-ship-small.png"; font="https://dl.dropboxusercontent.com/u/975836/Quintessential.ttf"; preload="https://dl.dropboxusercontent.com/u/975836/Pearl.png"*/
       String[] players = new String[{{players_list.count}} - 1];
-      int start_scroll = 1001;
+      
       PImage b;
+      PImage Pearl;
+      PFont font;
+
+      int the_width = 1069; 
+      int the_height = 720;
+
+      int start_scroll = the_height + 200;
 
       void setup() {
-        size(674, 1001);
+        size(the_width, the_height);
+        //size(674, the_height);
         background(100);
+
+        font = createFont("https://dl.dropboxusercontent.com/u/975836/Quintessential.ttf"); 
+        textFont(font); 
 
         
 
-        b = loadImage("https://dl.dropboxusercontent.com/u/975836/resurgam-paper-rotate.png");
+        b = loadImage("https://dl.dropboxusercontent.com/u/975836/ROSTER-ship-small.png");
+        Pearl = loadImage("https://dl.dropboxusercontent.com/u/975836/Pearl.png");
 
         background(b);
 
@@ -51,19 +66,20 @@
 
       void draw(){
         background(b);
-        text("SHIPMATES", 674/2, start_scroll);
+        text("SHIPMATES", the_width/2, start_scroll);
         for (int i = 0; i < players.length; i++) {
-          text(players[i].toUpperCase(), 674/2, start_scroll + 100 + (i * 40));
+          text(players[i].toUpperCase(), the_width/2, start_scroll + 100 + (i * 40));
         }
 
         start_scroll = start_scroll - 1;
 
-        if (start_scroll < ((1001 + 300 + (players.length * 40) ) *-1 )  ){
-          start_scroll = 1001;
+        if (start_scroll < ((the_height + 300 + (players.length * 40) ) *-1 )  ){
+          start_scroll = the_height + 200;
 
         }
 
-        text("JAMES BOND WILL RETURN", 674/2, start_scroll + 200 + (players.length * 40));
+        //text("JAMES BOND WILL RETURN", the_width/2, start_scroll + 200 + (players.length * 40));
+        image(Pearl, ((the_width - 900)/2), start_scroll + 200 + (players.length * 40));
 
 
       }
