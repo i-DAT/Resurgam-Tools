@@ -85,6 +85,14 @@ def checked_in_players(request):
     }, context_instance=RequestContext(request))
 
 @login_required
+def checked_in_crew(request):
+    crew_list = Crew.objects.filter(arrived=True)
+
+    return render_to_response('checked_in_crew.html', {
+        'crew_list': crew_list
+    }, context_instance=RequestContext(request))
+
+@login_required
 def list_start_times(request):
     types_list = TicketType.objects.all()
 
@@ -157,6 +165,15 @@ def check_in_players(request):
         'PUSHER_KEY': auths.PUSHER_KEY
     }, context_instance=RequestContext(request))
 
+@login_required
+def check_in_crew(request):
+    crew_list = Crew.objects.filter(arrived=False).order_by('name')
+
+    return render_to_response('check_in_crew.html', {
+        'crew_list': crew_list,
+        'PUSHER_KEY': auths.PUSHER_KEY
+    }, context_instance=RequestContext(request))
+
 @csrf_exempt
 def check_in_button(request):
     success = False
@@ -165,6 +182,20 @@ def check_in_button(request):
         the_player = get_object_or_404(Player, pk=player_id)
         the_player.arrived = True
         the_player.save()
+        success = True
+
+    return render_to_response('form_return.json', {
+            'success': success,
+    }, context_instance=RequestContext(request))
+
+@csrf_exempt
+def check_in_button_crew(request):
+    success = False
+    if request.method == "POST":
+        crew_id = request.POST['crew_id']
+        the_crew = get_object_or_404(Crew, pk=crew_id)
+        the_crew.arrived = True
+        the_crew.save()
         success = True
 
     return render_to_response('form_return.json', {

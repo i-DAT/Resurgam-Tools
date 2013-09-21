@@ -69,3 +69,11 @@ def pushMessage(sender, instance, **kwargs):
             'player_name': instance.name
         })
 
+@receiver(post_save, sender=Crew)
+def pushCrew(sender, instance, **kwargs):
+    if instance.arrived:
+        push = setupPusher()
+        push['crew'].trigger('checked_in', {
+            'crew_id': instance.id
+        })
+

@@ -17,6 +17,10 @@ urlpatterns = patterns('',
      (r'^boarding/check_in/', 'shipmates.views.check_in_button'),
      (r'^boarding/', 'shipmates.views.check_in_players'),
 
+     (r'^crew/list/', 'shipmates.views.checked_in_crew'),
+     (r'^crew/check_in/', 'shipmates.views.check_in_button_crew'),
+     (r'^crew/', 'shipmates.views.check_in_crew'),
+
      (r'^semaphore/sms/', 'semaphore.views.sms_endpoint'),
      (r'^semaphore/live/send/', 'semaphore.views.live_view_send'),
      (r'^semaphore/live/', 'semaphore.views.live_view'),

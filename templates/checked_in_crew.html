@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Checked In Crew | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">Crew Checked In: {{crew_list.count}}</a></li>
+{% endblock %}
+
+{% block ui %}
+  <li><a href="/accounts/logout/">Logout</a></li>
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+
+
+<table class="table table-striped">
+  <tbody>
+    {% for crew in crew_list %}
+    <tr id="{{crew.id}}">
+      <td><h2>{{crew.name}}</h2></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+</div>
+
+
+{% endblock %}
+    
+{% block pageScripts %}
+{% endblock %}

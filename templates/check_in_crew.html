@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Checking In crews | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">Crew Check In</a></li>
+{% endblock %}
+
+{% block ui %}
+  <li><a href="/accounts/logout/">Logout</a></li>
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+
+
+<table class="table table-striped">
+  <tbody>
+    {% for crew in crew_list %}
+    <tr id="{{crew.id}}">
+      <td><h2>{{crew.name}}</h2></td>
+      <td><input crew_id="{{crew.id}}" type="submit" value="Check in" class="btn btn-primary btn-large" /></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+</div>
+
+
+{% endblock %}
+    
+{% block pageScripts %}
+<script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    var pusher = new Pusher('{{PUSHER_KEY}}');
+      var channel = pusher.subscribe('crew');
+      channel.bind('checked_in', function(data) {
+        $("#"+ data.crew_id).remove();
+
+      });
+
+
+    $( ".btn" ).click(function() {
+      //alert(this.getAttribute( "crew_id" ));
+      $.post('/crew/check_in/', {"crew_id":this.getAttribute( "crew_id")});
+    });
+    </script>
+{% endblock %}
