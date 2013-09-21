@@ -77,6 +77,14 @@ def visual(request):
     }, context_instance=RequestContext(request))
 
 @login_required
+def checked_in_players(request):
+    players_list = Player.objects.filter(arrived=True)
+
+    return render_to_response('checked_in_players.html', {
+        'player_list': players_list
+    }, context_instance=RequestContext(request))
+
+@login_required
 def list_start_times(request):
     types_list = TicketType.objects.all()
 

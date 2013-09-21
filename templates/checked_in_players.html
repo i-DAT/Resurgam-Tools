@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Checking In Players | Resurgam{% endblock %}
+
+{% block nav %}
+    <li class="active"><a href="#">Players Checked In: {{player_list.count}}</a></li>
+{% endblock %}
+
+{% block ui %}
+  <li><a href="/accounts/logout/">Logout</a></li>
+{% endblock %}
+  	          
+{% block alerts %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="span12">
+
+
+<table class="table table-striped">
+  <tbody>
+    {% for player in player_list %}
+    <tr id="{{player.id}}">
+      <td><h2>{{player.name}}</h2></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+</div>
+
+
+{% endblock %}
+    
+{% block pageScripts %}
+{% endblock %}
