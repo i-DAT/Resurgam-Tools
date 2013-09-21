@@ -9,10 +9,13 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django import forms
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from models import *
 
 import collections
+
+from settings import authentications as auths
 
 
 def make_player_form(quantity, first_player, first_player_email):
@@ -133,5 +136,28 @@ def check_in_holders(request, holder_id):
     return render_to_response('check_in_holders.html', {
         'the_holder': the_holder,
         'the_form': the_form
+    }, context_instance=RequestContext(request))
+
+@login_required
+def check_in_players(request):
+    player_list = Player.objects.filter(arrived=False).order_by('name')
+
+    return render_to_response('check_in_players.html', {
+        'player_list': player_list,
+        'PUSHER_KEY': auths.PUSHER_KEY
+    }, context_instance=RequestContext(request))
+
+@csrf_exempt
+def check_in_button(request):
+    success = False
+    if request.method == "POST":
+        player_id = request.POST['player_id']
+        the_player = get_object_or_404(Player, pk=player_id)
+        the_player.arrived = True
+        the_player.save()
+        success = True
+
+    return render_to_response('form_return.json', {
+            'success': success,
     }, context_instance=RequestContext(request))
 

@@ -1,5 +1,21 @@
 from django.db import models
 
+import pusher
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+from settings import authentications as auths
+
+def setupPusher():
+    p = pusher.Pusher(
+        app_id=auths.PUSHER_APP_ID,
+        key=auths.PUSHER_KEY,
+        secret=auths.PUSHER_SECRET
+    )
+    return p
+
+
 class TicketType(models.Model):
     eb_id = models.IntegerField()
     name = models.CharField(max_length=250)
@@ -28,4 +44,12 @@ class Player(models.Model):
     def __unicode__(self):
         return self.name
 
+
+@receiver(post_save, sender=Player)
+def pushMessage(sender, instance, **kwargs):
+    if instance.arrived:
+        push = setupPusher()
+        push['boarding'].trigger('checked_in', {
+            'player_id': instance.id,
+        })
 
