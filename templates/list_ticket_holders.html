@@ -41,7 +41,6 @@
 {% else %}
   {% if next_id == 6 %}
   <h1>All Finished!!!</h1>
-  <h1>Proceed to RWY</h1>
   {% else %}
   <h1>All done for this time slot!</h1>
 
@@ -60,7 +59,7 @@
       var channel = pusher.subscribe('arrivals');
       channel.bind('checked_in', function(data) {
         $("#"+ data.holder_id).remove();
-        if($('table tr').length = 1){
+        if($('table tr').length == 1){
           $("#the_content").html("{% if next_id == 6 %}<h1>All Finished!!!</h1>{% else %}<h1>All done for this time slot!</h1><a href=\"/shipmates/time/{{next_id}}/\" class=\"btn btn-primary btn-large\">Next one</a>{% endif %}")
         }
 
