@@ -44,6 +44,13 @@ class Player(models.Model):
     def __unicode__(self):
         return self.name
 
+class Crew(models.Model):
+    name = models.CharField(max_length=500)
+    arrived = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return self.name
+
 
 @receiver(post_save, sender=Player)
 def pushMessage(sender, instance, **kwargs):
